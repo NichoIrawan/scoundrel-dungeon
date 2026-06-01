@@ -1,35 +1,116 @@
 using Assets.Scripts;
 using Assets.Scripts.Manager;
+using Assets.Scripts.ScriptableObjects;
 using UnityEngine;
 
 public class SlotManager : MonoBehaviour, IInteractable
 {
-    [SerializeField] private GameObject _selectedEffigiesLight;
+    [SerializeField] private GameObject _selectedHighlight;
+    [SerializeField] private GameObject _resolvedOverlay;
+    [SerializeField] private GameObject _discardedOverlay;
     [SerializeField] private RoomManager roomManager;
-    [SerializeField] private bool _isSelected;
-    [SerializeField] private string effigyName;
 
-    public string EffigyName => effigyName;
+    private string _encounterId;
+    private int _slotIndex;
+    private EncounterScriptableObject _encounterSO;
+    private bool _isResolved;
+    private bool _isDiscarded;
 
-    public void Interact()
+    public string EncounterId => _encounterId;
+    public int SlotIndex => _slotIndex;
+    public EncounterScriptableObject EncounterData => _encounterSO;
+
+    public void SetEncounterId(string encounterId, int slotIndex)
     {
-        SetSelected(!_isSelected);
-        roomManager?.RegisterSlotSelection(this, _isSelected);
+        _encounterId = encounterId;
+        _slotIndex = slotIndex;
+        _encounterSO = null;
+        _isResolved = false;
+        _isDiscarded = false;
+
+        gameObject.name = string.IsNullOrWhiteSpace(encounterId)
+            ? $"Empty Slot {slotIndex}"
+            : $"Slot {slotIndex} [{encounterId}]";
+
+        RefreshVisuals();
     }
 
-    public void SetEffigyName(string value)
+    public void SetEncounterData(EncounterScriptableObject so)
     {
-        effigyName = value;
-        gameObject.name = string.IsNullOrWhiteSpace(effigyName) ? "Empty Slot" : effigyName;
+        _encounterSO = so;
     }
+
+    public void SetResolved(bool resolved)
+    {
+        _isResolved = resolved;
+        RefreshVisuals();
+    }
+
+    public void SetDiscarded(bool discarded)
+    {
+        _isDiscarded = discarded;
+        RefreshVisuals();
+    }
+
+    public string EffigyName => _encounterId;
+
+    public void SetEffigyName(string value) => SetEncounterId(value, _slotIndex);
 
     public void SetSelected(bool isSelected)
     {
-        _isSelected = isSelected;
+        if (_selectedHighlight != null)
+            _selectedHighlight.SetActive(isSelected);
+    }
 
-        if (_selectedEffigiesLight != null)
+    public void Interact()
+    {
+        if (_isResolved || _isDiscarded)
         {
-            _selectedEffigiesLight.SetActive(_isSelected);
+            Debug.Log($"[SlotManager] Slot {_slotIndex} already resolved/discarded — ignoring.");
+            return;
         }
+
+        ResolveRoomManager();
+
+        if (roomManager == null)
+        {
+            Debug.LogWarning("[SlotManager] No RoomManager found.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_encounterId))
+        {
+            Debug.LogWarning($"[SlotManager] Slot {_slotIndex} has no encounter assigned.");
+            return;
+        }
+
+        if (_encounterSO is EnemiesScriptableObject)
+        {
+            roomManager.ResolveMonsterWithHealth(_slotIndex);
+        }
+        else if (_encounterSO is EquipmentsScriptableObject)
+        {
+            roomManager.ResolveWeapon(_slotIndex);
+        }
+        else if (_encounterSO is ConsumablesScriptableObject)
+        {
+            roomManager.ResolveUsePotionFromSlot(_slotIndex);
+        }
+        else
+        {
+            Debug.LogWarning($"[SlotManager] Unknown encounter type for '{_encounterId}'. Cannot route interaction.");
+        }
+    }
+
+    private void RefreshVisuals()
+    {
+        if (_resolvedOverlay != null) _resolvedOverlay.SetActive(_isResolved);
+        if (_discardedOverlay != null) _discardedOverlay.SetActive(_isDiscarded);
+    }
+
+    private void ResolveRoomManager()
+    {
+        if (roomManager != null) return;
+        roomManager = FindAnyObjectByType<RoomManager>();
     }
 }

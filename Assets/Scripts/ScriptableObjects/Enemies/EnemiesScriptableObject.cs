@@ -4,8 +4,9 @@ using UnityEngine;
 namespace Assets.Scripts
 {
     [CreateAssetMenu(fileName = "EnemiesData", menuName = "ScriptableObjects/EnemiesScriptableObject")]
-    public class EnemiesScriptableObject : Encounter
+    public class EnemiesScriptableObject : EncounterScriptableObject
     {
-        public int Power;
+        [Tooltip("Damage dealt to the player. Replaces old 'Power' field. TDD §4.2")]
+        public int Strength;
     }
 }

@@ -7,50 +7,66 @@ namespace Assets.Scripts
     [CreateAssetMenu(fileName = "EncounterRegistry", menuName = "ScriptableObjects/EncounterRegistry")]
     public class EncounterRegistry : ScriptableObject
     {
-        [SerializeField] private List<Encounter> _effigies;
-        public Dictionary<string, Encounter> Dictionary;
+        [SerializeField] private List<EncounterScriptableObject> _encounters;
 
-        public List<string> _enemies = new();
-        public List<string> _equipments = new();
-        public List<string> _consumables = new();
+        public Dictionary<string, EncounterScriptableObject> Dictionary { get; private set; }
+        public List<string> MonsterIds { get; private set; } = new();
+        public List<string> WeaponIds { get; private set; } = new();
+        public List<string> PotionIds { get; private set; } = new();
 
         public void Initialize()
         {
-            Dictionary = new Dictionary<string, Encounter>();
-            _enemies.Clear();
-            _equipments.Clear();
-            _consumables.Clear();
+            Dictionary = new Dictionary<string, EncounterScriptableObject>();
+            MonsterIds = new List<string>();
+            WeaponIds = new List<string>();
+            PotionIds = new List<string>();
 
-            foreach (var encounter in _effigies)
-            {
-                Dictionary[encounter.Name] = encounter;
-            }
+            if (_encounters == null) return;
 
-            foreach (var kvp in Dictionary)
+            foreach (var encounter in _encounters)
             {
-                if (kvp.Value is EnemiesScriptableObject)
+                if (encounter == null) continue;
+
+                var key = !string.IsNullOrWhiteSpace(encounter.EncounterId)
+                    ? encounter.EncounterId
+                    : encounter.DisplayName;
+
+                if (string.IsNullOrWhiteSpace(key))
                 {
-                    _enemies.Add(kvp.Key);
+                    Debug.LogWarning($"[EncounterRegistry] Encounter asset '{encounter.name}' has no EncounterId or DisplayName. Skipping.");
+                    continue;
                 }
-                else if (kvp.Value is EquipmentsScriptableObject)
+
+                Dictionary[key] = encounter;
+
+                if (encounter is EnemiesScriptableObject)
                 {
-                    _equipments.Add(kvp.Key);
+                    MonsterIds.Add(key);
                 }
-                else if (kvp.Value is ConsumablesScriptableObject)
+                else if (encounter is EquipmentsScriptableObject)
                 {
-                    _consumables.Add(kvp.Key);
+                    WeaponIds.Add(key);
+                }
+                else if (encounter is ConsumablesScriptableObject)
+                {
+                    PotionIds.Add(key);
+                }
+                else
+                {
+                    Debug.LogWarning($"[EncounterRegistry] Unknown encounter type '{encounter.GetType().Name}' for key '{key}'.");
                 }
             }
         }
 
-        public Encounter TryGetEncounter(string id)
+        public EncounterScriptableObject TryGetEncounter(string id)
         {
-            if (Dictionary.TryGetValue(id, out var encounter))
+            if (Dictionary == null)
             {
-                return encounter;
+                Debug.LogError("[EncounterRegistry] Dictionary is null. Was Initialize() called?");
+                return null;
             }
 
-            return null;
+            return Dictionary.TryGetValue(id, out var encounter) ? encounter : null;
         }
     }
 }

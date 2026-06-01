@@ -31,10 +31,23 @@ public class RunManager : MonoBehaviour, IDataPersistence
         runStateInitialized = true;
     }
 
+    public void InitializeNewRun()
+    {
+        playerState = new PlayerState
+        {
+            Health = 35,
+            EquippedWeaponId = null,
+            StoredPotionId = null,
+            LastKilledByWeaponStrength = null,
+            CanEscape = true
+        };
+        runStateInitialized = true;
+    }
+
     public void EquipWeapon(string weaponId)
     {
         playerState.EquippedWeaponId = weaponId;
-        playerState.LastDefeatedEnemyStrength = 0;
+        playerState.LastKilledByWeaponStrength = null;
     }
 
     public void StorePotion(string potionId)
@@ -42,27 +55,35 @@ public class RunManager : MonoBehaviour, IDataPersistence
         playerState.StoredPotionId = potionId;
     }
 
-    public bool TryUseStoredPotion(int healAmount)
-    {
-        if (string.IsNullOrEmpty(playerState.StoredPotionId) || playerState.PotionUsedThisRoom)
-        {
-            return false;
-        }
-
-        playerState.Health += Math.Max(0, healAmount);
-        playerState.StoredPotionId = null;
-        playerState.PotionUsedThisRoom = true;
-        return true;
-    }
-
-    public void ResetRoomLimitedActions()
-    {
-        playerState.PotionUsedThisRoom = false;
-    }
-
     public void RecordWeaponDefeat(int enemyStrength)
     {
-        playerState.LastDefeatedEnemyStrength = enemyStrength;
+        playerState.LastKilledByWeaponStrength = enemyStrength;
+    }
+
+    public void ApplyResult(EncounterResult result)
+    {
+        if (result == null) return;
+
+        playerState.Health += result.HealthDelta;
+
+        if (result.EquippedWeaponId != null)
+        {
+            playerState.EquippedWeaponId = result.EquippedWeaponId;
+        }
+
+        if (result.StoredPotionId != null)
+        {
+            playerState.StoredPotionId = result.StoredPotionId;
+        }
+
+        if (result.ResetWeaponChain)
+        {
+            playerState.LastKilledByWeaponStrength = null;
+        }
+        else if (result.LastKilledByWeaponStrength.HasValue)
+        {
+            playerState.LastKilledByWeaponStrength = result.LastKilledByWeaponStrength;
+        }
     }
 
     public void SaveCurrentRun(string username, string password)
@@ -99,3 +120,4 @@ public class RunManager : MonoBehaviour, IDataPersistence
         SaveGameBridge.SetActiveGameData(saveData.Username, saveData);
     }
 }
+

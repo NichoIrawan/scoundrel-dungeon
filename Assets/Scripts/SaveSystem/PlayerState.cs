@@ -5,10 +5,10 @@ namespace Assets.Scripts.SaveSystem
     [Serializable]
     public class PlayerState
     {
-        public int Health = 20;
+        public int Health = 35;
         public string EquippedWeaponId;
         public string StoredPotionId;
-        public int LastDefeatedEnemyStrength;
-        public bool PotionUsedThisRoom;
+        public int? LastKilledByWeaponStrength;
+        public bool CanEscape = true;
     }
 }

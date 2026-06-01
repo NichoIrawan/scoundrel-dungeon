@@ -136,5 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de71d2f4b620084584ad8d1c2252d6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _selectedEffigiesLight: {fileID: 1922408343442585777}
+  _selectedHighlight: {fileID: 1922408343442585777}
+  _resolvedOverlay: {fileID: 0}
+  _discardedOverlay: {fileID: 0}
   roomManager: {fileID: 0}

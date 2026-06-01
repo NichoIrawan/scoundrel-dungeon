@@ -38,7 +38,7 @@ namespace Assets.Scripts.SceneController
 
         public Coroutine Perform()
         {
-            return global::SceneController.Instance.ExecutePlan(this);
+            return SceneController.Instance.ExecutePlan(this);
         }
     }
 }

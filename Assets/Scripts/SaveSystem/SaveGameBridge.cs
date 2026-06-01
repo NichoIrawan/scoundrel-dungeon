@@ -18,5 +18,7 @@ namespace Assets.Scripts.SaveSystem
             ActiveUsername = null;
             ActiveGameData = null;
         }
+
+        public static void ClearActiveGameData() => Clear();
     }
 }

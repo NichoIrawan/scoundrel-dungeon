@@ -43,6 +43,8 @@ namespace Assets.Scripts.SaveSystem
         public bool HasGameData => gameData != null;
         public bool HasActiveAccount => !string.IsNullOrEmpty(activeUsername);
 
+        public bool HasActiveRun => HasGameData && HasActiveAccount;
+
         private void Awake()
         {
             if (instance != null && instance != this)
@@ -141,6 +143,48 @@ namespace Assets.Scripts.SaveSystem
             gameData.MetaData.SaveDate = gameData.UpdatedAtUtc;
             dataHandler.Save(activeUsername, activePassword, gameData);
             SaveGameBridge.SetActiveGameData(activeUsername, gameData);
+        }
+
+        public void AutoSave()
+        {
+            if (!HasActiveAccount || !HasGameData) return;
+            SaveGame();
+        }
+
+        public void DeleteSave()
+        {
+            if (!HasActiveAccount) return;
+
+            try
+            {
+                var savePath = SaveGameRepository.GetSavePath(activeUsername);
+                if (System.IO.File.Exists(savePath))
+                {
+                    System.IO.File.Delete(savePath);
+                    Debug.Log($"[DataPersistenceManager] Save deleted for '{activeUsername}'.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[DataPersistenceManager] Failed to delete save: {ex.Message}");
+            }
+
+            gameData = null;
+            SaveGameBridge.ClearActiveGameData();
+        }
+
+        public void Logout()
+        {
+            if (HasActiveRun)
+            {
+                Debug.LogWarning("[DataPersistenceManager] Cannot logout while an active run exists. Save and return to Main Menu first.");
+                return;
+            }
+
+            activeUsername = null;
+            activePassword = null;
+            gameData = null;
+            SaveGameBridge.ClearActiveGameData();
         }
 
         private void LoadDataIntoObjects()

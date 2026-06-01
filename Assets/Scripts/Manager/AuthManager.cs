@@ -14,5 +14,12 @@ namespace Assets.Scripts.Manager
         {
             DataPersistenceManager.Instance.Login(username, password);
         }
+        
+        public void Logout()
+        {
+            DataPersistenceManager.Instance.Logout();
+        }
+
+        public bool HasActiveRun => DataPersistenceManager.Instance.HasActiveRun;
     }
 }

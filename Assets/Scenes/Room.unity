@@ -229,8 +229,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 577537739}
+  - component: {fileID: 577537740}
   m_Layer: 0
-  m_Name: Monster Spawner
+  m_Name: EncounterSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -251,6 +252,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1008234194}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &577537740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577537738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d9f6d7dd25421986961737bd466a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Manager.EncounterSpawner
+  roomManager: {fileID: 1832357290}
+  dungeonManager: {fileID: 0}
 --- !u!1001 &608330381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -263,6 +278,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7951262931971925223, guid: b739f8d2a03b1f34db0e00e61788fc56, type: 3}
+      propertyPath: roomManager
+      value: 
+      objectReference: {fileID: 1832357290}
     - target: {fileID: 8025121160052566507, guid: b739f8d2a03b1f34db0e00e61788fc56, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6
@@ -521,7 +540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1393012236}
   m_Layer: 0
-  m_Name: Effigies
+  m_Name: Encounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -639,12 +658,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ecd1a2e1e3311c4185a6c6cc64d9d3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Manager.RoomManager
-  _effigiesSlot:
+  _encounterSlots:
   - {fileID: 780093662}
   - {fileID: 518438874}
   - {fileID: 608330383}
   - {fileID: 2139775798}
-  SelectedEffigies: []
+  dungeonManager: {fileID: 0}
+  encounterResolver: {fileID: 0}
+  runManager: {fileID: 0}
+  encounterSpawner: {fileID: 577537740}
 --- !u!4 &1832357291
 Transform:
   m_ObjectHideFlags: 0
@@ -982,6 +1004,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7951262931971925223, guid: b739f8d2a03b1f34db0e00e61788fc56, type: 3}
+      propertyPath: roomManager
+      value: 
+      objectReference: {fileID: 1832357290}
     - target: {fileID: 8025121160052566507, guid: b739f8d2a03b1f34db0e00e61788fc56, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6

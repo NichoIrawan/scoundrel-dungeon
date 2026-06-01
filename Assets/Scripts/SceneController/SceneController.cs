@@ -1,135 +1,137 @@
-using Assets.Scripts.SceneController;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController : MonoBehaviour
+namespace Assets.Scripts.SceneController
 {
-    #region Singleton
-    public static SceneController Instance;
-
-    private void Awake()
+    public class SceneController : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        #region Singleton
+        public static SceneController Instance;
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-    }
-    #endregion
-
-    [SerializeField] private LoadingOverlay loadingOverlay;
-
-    private Dictionary<string, string> loadedSceneBySlot = new();
-    private bool isBusy = false;
-
-    public SceneTransitionPlan NewTransition()
-    {
-        return new SceneTransitionPlan();
-    }
-
-    public Coroutine ExecutePlan(SceneTransitionPlan plan)
-    {
-        if (isBusy)
-        {
-            Debug.LogWarning("Scene change already in progress.");
-            return null;
-        }
-        isBusy = true;
-        return StartCoroutine(ChangeSceneRoutine(plan));
-    }
-
-    private IEnumerator ChangeSceneRoutine(SceneTransitionPlan plan)
-    {
-        if (plan.Overlay)
-        {
-            yield return loadingOverlay.FadeInBlack();
-            yield return new WaitForSeconds(0.5f);
-        }
-
-        foreach (var slotKey in plan.ScenesToUnload)
-        {
-            yield return UnloadSceneRoutine(slotKey);
-        }
-
-        if (plan.ClearUnusedAssets) yield return CleanupUnusedAssetsRoutine();
-
-        foreach (var kvp in plan.ScenesToLoad)
-        {
-            if (loadedSceneBySlot.ContainsKey(kvp.Key))
+            if (Instance != null && Instance != this)
             {
-                Debug.LogWarning($"Slot {kvp.Key} already has a loaded scene. Unloading it first.");
-                yield return UnloadSceneRoutine(kvp.Key);
+                Destroy(gameObject);
+                return;
             }
-            yield return LoadAdditiveRoutine(kvp.Key, kvp.Value, plan.ActiveSceneName == kvp.Value);
+
+            Instance = this;
+        }
+        #endregion
+
+        [SerializeField] private LoadingOverlay loadingOverlay;
+
+        private Dictionary<string, string> loadedSceneBySlot = new();
+        private bool isBusy = false;
+
+        public SceneTransitionPlan NewTransition()
+        {
+            return new SceneTransitionPlan();
         }
 
-        if (plan.Overlay)
+        public Coroutine ExecutePlan(SceneTransitionPlan plan)
         {
-            yield return loadingOverlay.FadeOutBlack();
-            yield return new WaitForSeconds(0.5f);
-        }
-
-        isBusy = false;
-    }
-
-    private IEnumerator LoadAdditiveRoutine(string slotKey, string sceneName, bool setActive)
-    {
-        AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
-        if (loadOp == null) yield break;
-        loadOp.allowSceneActivation = false;
-
-        while (loadOp.progress < 0.9f)
-        {
-            yield return null;
-        }
-
-        loadOp.allowSceneActivation = true;
-        while (!loadOp.isDone)
-        {
-            yield return null;
-        }
-
-        if (setActive)
-        {
-            Scene newScene = SceneManager.GetSceneByName(sceneName);
-            if (newScene.IsValid() && newScene.isLoaded)
+            if (isBusy)
             {
-                SceneManager.SetActiveScene(newScene);
+                Debug.LogWarning("Scene change already in progress.");
+                return null;
             }
+            isBusy = true;
+            return StartCoroutine(ChangeSceneRoutine(plan));
         }
-        loadedSceneBySlot[slotKey] = sceneName;
-    }
 
-    private IEnumerator UnloadSceneRoutine(string slotKey)
-    {
-        if (!loadedSceneBySlot.TryGetValue(slotKey, out string sceneName)) yield break;
-        if (string.IsNullOrEmpty(sceneName)) yield break;
-
-        AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneName);
-        if (unloadOp != null)
+        private IEnumerator ChangeSceneRoutine(SceneTransitionPlan plan)
         {
-            while (!unloadOp.isDone)
+            if (plan.Overlay)
+            {
+                yield return loadingOverlay.FadeInBlack();
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            foreach (var slotKey in plan.ScenesToUnload)
+            {
+                yield return UnloadSceneRoutine(slotKey);
+            }
+
+            if (plan.ClearUnusedAssets) yield return CleanupUnusedAssetsRoutine();
+
+            foreach (var kvp in plan.ScenesToLoad)
+            {
+                if (loadedSceneBySlot.ContainsKey(kvp.Key))
+                {
+                    Debug.LogWarning($"Slot {kvp.Key} already has a loaded scene. Unloading it first.");
+                    yield return UnloadSceneRoutine(kvp.Key);
+                }
+                yield return LoadAdditiveRoutine(kvp.Key, kvp.Value, plan.ActiveSceneName == kvp.Value);
+            }
+
+            if (plan.Overlay)
+            {
+                yield return loadingOverlay.FadeOutBlack();
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            isBusy = false;
+        }
+
+        private IEnumerator LoadAdditiveRoutine(string slotKey, string sceneName, bool setActive)
+        {
+            AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
+            if (loadOp == null) yield break;
+            loadOp.allowSceneActivation = false;
+
+            while (loadOp.progress < 0.9f)
             {
                 yield return null;
             }
-        }
 
-        loadedSceneBySlot.Remove(slotKey);
-    }
-
-    private IEnumerator CleanupUnusedAssetsRoutine()
-    {
-        AsyncOperation cleanupOp = Resources.UnloadUnusedAssets();
-        if (cleanupOp != null)
-        {
-            while (!cleanupOp.isDone)
+            loadOp.allowSceneActivation = true;
+            while (!loadOp.isDone)
             {
                 yield return null;
+            }
+
+            if (setActive)
+            {
+                Scene newScene = SceneManager.GetSceneByName(sceneName);
+                if (newScene.IsValid() && newScene.isLoaded)
+                {
+                    SceneManager.SetActiveScene(newScene);
+                }
+            }
+            loadedSceneBySlot[slotKey] = sceneName;
+        }
+
+        private IEnumerator UnloadSceneRoutine(string slotKey)
+        {
+            if (!loadedSceneBySlot.TryGetValue(slotKey, out string sceneName)) yield break;
+            if (string.IsNullOrEmpty(sceneName)) yield break;
+
+            AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneName);
+            if (unloadOp != null)
+            {
+                while (!unloadOp.isDone)
+                {
+                    yield return null;
+                }
+            }
+
+            loadedSceneBySlot.Remove(slotKey);
+        }
+
+        private IEnumerator CleanupUnusedAssetsRoutine()
+        {
+            AsyncOperation cleanupOp = Resources.UnloadUnusedAssets();
+            if (cleanupOp != null)
+            {
+                while (!cleanupOp.isDone)
+                {
+                    yield return null;
+                }
             }
         }
     }
