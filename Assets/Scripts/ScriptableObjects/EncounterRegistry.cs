@@ -1,17 +1,14 @@
-﻿using Assets.Scripts.ScriptableObjects;
-using System;
-using System.Collections;
+using Assets.Scripts.ScriptableObjects;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    [CreateAssetMenu(fileName = "EffigiesDictionary", menuName = "ScriptableObjects/EffigiesDictionary")]
-    public class EffigiesDictionary : ScriptableObject
+    [CreateAssetMenu(fileName = "EncounterRegistry", menuName = "ScriptableObjects/EncounterRegistry")]
+    public class EncounterRegistry : ScriptableObject
     {
-        [SerializeField] private List<Effigies> _effigies;
-        public Dictionary<string, Effigies> Dictionary;
+        [SerializeField] private List<Encounter> _effigies;
+        public Dictionary<string, Encounter> Dictionary;
 
         public List<string> _enemies = new();
         public List<string> _equipments = new();
@@ -19,13 +16,16 @@ namespace Assets.Scripts
 
         public void Initialize()
         {
-            Dictionary = new Dictionary<string, Effigies>();
-            foreach (var effigy in _effigies)
+            Dictionary = new Dictionary<string, Encounter>();
+            _enemies.Clear();
+            _equipments.Clear();
+            _consumables.Clear();
+
+            foreach (var encounter in _effigies)
             {
-                Dictionary[effigy.Name] = effigy;
+                Dictionary[encounter.Name] = encounter;
             }
 
-            // Sorting effigies into categories
             foreach (var kvp in Dictionary)
             {
                 if (kvp.Value is EnemiesScriptableObject)
@@ -43,12 +43,13 @@ namespace Assets.Scripts
             }
         }
 
-        public Effigies TryGetEffigy(string name)
+        public Encounter TryGetEncounter(string id)
         {
-            if (Dictionary.TryGetValue(name, out var effigy))
+            if (Dictionary.TryGetValue(id, out var encounter))
             {
-                return effigy;
+                return encounter;
             }
+
             return null;
         }
     }

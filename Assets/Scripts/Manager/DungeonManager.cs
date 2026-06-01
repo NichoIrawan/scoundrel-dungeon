@@ -13,7 +13,7 @@ namespace Assets.Scripts.Manager
         [SerializeField] private string seed = "default_seed";
         [SerializeField] private int roomUnit = 7;
         [SerializeField] private bool loadActiveSaveOnStart = true;
-        [SerializeField] private EffigiesDictionary dictionary;
+        [SerializeField] private EncounterRegistry encounterRegistry;
 
         private readonly Queue<int> unresolvedNodes = new();
         private DungeonState dungeonState = new();
@@ -217,15 +217,15 @@ namespace Assets.Scripts.Manager
 
             if (roll <= 26)
             {
-                return PickEncounter(dictionary._enemies, roll - 1);
+                return PickEncounter(encounterRegistry._enemies, roll - 1);
             }
 
             if (roll <= 39)
             {
-                return PickEncounter(dictionary._equipments, roll - 27);
+                return PickEncounter(encounterRegistry._equipments, roll - 27);
             }
 
-            return PickEncounter(dictionary._consumables, roll - 40);
+            return PickEncounter(encounterRegistry._consumables, roll - 40);
         }
 
         private static string PickEncounter(IReadOnlyList<string> encounterIds, int rollOffset)
@@ -274,13 +274,13 @@ namespace Assets.Scripts.Manager
 
         private void InitializeDictionary()
         {
-            if (dictionary == null)
+            if (encounterRegistry == null)
             {
-                Debug.LogWarning("DungeonManager requires an EffigiesDictionary to generate encounters.");
+                Debug.LogWarning("DungeonManager requires an EncounterRegistry to generate encounters.");
                 return;
             }
 
-            dictionary.Initialize();
+            encounterRegistry.Initialize();
         }
 
         private void SyncUnresolvedNodesFromState()

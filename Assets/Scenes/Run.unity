@@ -186,7 +186,7 @@ MonoBehaviour:
   seed: default_seed
   roomUnit: 7
   loadActiveSaveOnStart: 1
-  dictionary: {fileID: 11400000, guid: d7329e90d221c834dbb37d7c0a566220, type: 2}
+  encounterRegistry: {fileID: 11400000, guid: d7329e90d221c834dbb37d7c0a566220, type: 2}
 --- !u!1 &1583914740
 GameObject:
   m_ObjectHideFlags: 0
