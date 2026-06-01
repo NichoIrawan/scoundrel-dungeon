@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Assets.Scripts
 {
     [CreateAssetMenu(fileName = "EnemiesData", menuName = "ScriptableObjects/EnemiesScriptableObject")]
-    public class EnemiesScriptableObject : Effigies
+    public class EnemiesScriptableObject : Encounter
     {
         public int Power;
     }

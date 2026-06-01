@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Assets.Scripts.ScriptableObjects
 {
-	public abstract class Effigies: ScriptableObject
+	public abstract class Encounter: ScriptableObject
 	{
 		public string Name;
     }

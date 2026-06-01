@@ -136,6 +136,9 @@ namespace Assets.Scripts.SaveSystem
 
             gameData.Username = activeUsername;
             gameData.UpdatedAtUtc = DateTime.UtcNow.ToString("O");
+            gameData.MetaData ??= new MetaData();
+            gameData.MetaData.SaveVersion = gameData.Version;
+            gameData.MetaData.SaveDate = gameData.UpdatedAtUtc;
             dataHandler.Save(activeUsername, activePassword, gameData);
             SaveGameBridge.SetActiveGameData(activeUsername, gameData);
         }

@@ -10,8 +10,8 @@ namespace Assets.Scripts
     [CreateAssetMenu(fileName = "EffigiesDictionary", menuName = "ScriptableObjects/EffigiesDictionary")]
     public class EffigiesDictionary : ScriptableObject
     {
-        [SerializeField] private List<Encounter> _effigies;
-        public Dictionary<string, Encounter> Dictionary;
+        [SerializeField] private List<Effigies> _effigies;
+        public Dictionary<string, Effigies> Dictionary;
 
         public List<string> _enemies = new();
         public List<string> _equipments = new();
@@ -19,7 +19,7 @@ namespace Assets.Scripts
 
         public void Initialize()
         {
-            Dictionary = new Dictionary<string, Encounter>();
+            Dictionary = new Dictionary<string, Effigies>();
             foreach (var effigy in _effigies)
             {
                 Dictionary[effigy.Name] = effigy;
@@ -43,7 +43,7 @@ namespace Assets.Scripts
             }
         }
 
-        public Encounter TryGetEffigy(string name)
+        public Effigies TryGetEffigy(string name)
         {
             if (Dictionary.TryGetValue(name, out var effigy))
             {

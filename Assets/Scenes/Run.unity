@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 205296311}
   - component: {fileID: 205296312}
+  - component: {fileID: 205296313}
   m_Layer: 0
   m_Name: RunManager
   m_TagString: Untagged
@@ -163,8 +164,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323c341b044012f479b286add523195c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  loadActiveSaveOnStart: 1
+  playerState:
+    Health: 20
+    EquippedWeaponId: 
+    StoredPotionId: 
+    LastDefeatedEnemyStrength: 0
+    PotionUsedThisRoom: 0
+--- !u!114 &205296313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205296310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ab4c91df48d4e7fab6d558c4f95b820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
   seed: default_seed
-  _dictionary: {fileID: 11400000, guid: d7329e90d221c834dbb37d7c0a566220, type: 2}
+  roomUnit: 7
+  loadActiveSaveOnStart: 1
+  dictionary: {fileID: 11400000, guid: d7329e90d221c834dbb37d7c0a566220, type: 2}
 --- !u!1 &1583914740
 GameObject:
   m_ObjectHideFlags: 0

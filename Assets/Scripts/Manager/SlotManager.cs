@@ -1,28 +1,35 @@
 using Assets.Scripts;
 using Assets.Scripts.Manager;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class SlotManager : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject _selectedEffigiesLight;
     [SerializeField] private RoomManager roomManager;
     [SerializeField] private bool _isSelected;
+    [SerializeField] private string effigyName;
+
+    public string EffigyName => effigyName;
 
     public void Interact()
     {
-        _isSelected = !_isSelected;
+        SetSelected(!_isSelected);
+        roomManager?.RegisterSlotSelection(this, _isSelected);
+    }
 
-        if (_isSelected)
-        {
-            _selectedEffigiesLight.SetActive(true);
-            roomManager.SelectedEffigies.Add(gameObject);
+    public void SetEffigyName(string value)
+    {
+        effigyName = value;
+        gameObject.name = string.IsNullOrWhiteSpace(effigyName) ? "Empty Slot" : effigyName;
+    }
 
-        }
-        else
+    public void SetSelected(bool isSelected)
+    {
+        _isSelected = isSelected;
+
+        if (_selectedEffigiesLight != null)
         {
-            _selectedEffigiesLight.SetActive(false);
-            roomManager.SelectedEffigies.Remove(gameObject);
+            _selectedEffigiesLight.SetActive(_isSelected);
         }
     }
 }
