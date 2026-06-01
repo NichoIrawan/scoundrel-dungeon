@@ -6,14 +6,14 @@ namespace Assets.Scripts.SceneController
 {
     class SceneDatabase
     {
-        public class Slots
+        internal class Slots
         {
             public const string Menu = "Menu";
             public const string Run = "Run";
             public const string Phases = "Phases";
         }
 
-        public class Scenes
+        internal class Scenes
         {
             public const string MainMenu = "MainMenu";
             public const string Run = "Run";

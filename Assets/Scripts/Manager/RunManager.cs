@@ -1,13 +1,17 @@
 using Assets.Scripts;
+using Assets.Scripts.SaveSystem;
 using Assets.Scripts.ScriptableObjects;
+using Assets.Scripts.Utilities;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class RunManager : MonoBehaviour
+public class RunManager : MonoBehaviour, IDataPersistence
 {
     [SerializeField] private string seed = "default_seed";
+    [SerializeField] private int roomUnit = 7;
+    [SerializeField] private int currentRoomIndex;
+    [SerializeField] private bool loadActiveSaveOnStart = true;
     [SerializeField] private EffigiesDictionary _dictionary;
 
     public Dictionary<int, string[]> EffigiesInRoom = new();
@@ -21,7 +25,15 @@ public class RunManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GenerateMap(7, seed);
+        if (loadActiveSaveOnStart && SaveGameBridge.HasActiveGameData)
+        {
+            LoadData(SaveGameBridge.ActiveGameData);
+        }
+        else if (EffigiesInRoom.Count == 0)
+        {
+            GenerateMap(roomUnit, seed);
+        }
+
         foreach (var kvp in EffigiesInRun)
         {
             Debug.Log($"{kvp.Key}: {kvp.Value}");
@@ -44,6 +56,11 @@ public class RunManager : MonoBehaviour
 
     public void GenerateMap(int roomUnit, string seed)
     {
+        this.roomUnit = roomUnit;
+        this.seed = seed;
+        EffigiesInRoom.Clear();
+        EffigiesInRun.Clear();
+
         var random = new System.Random(seed.GetHashCode());
 
         for (int i = 0; i < roomUnit; i++)
@@ -86,5 +103,57 @@ public class RunManager : MonoBehaviour
             }
             EffigiesInRoom[i] = effigiesInRoom;
         }
+    }
+
+    public void SaveCurrentRun(string username, string password)
+    {
+        DataPersistenceManager.Instance.Login(username, password);
+        DataPersistenceManager.Instance.SaveGame();
+    }
+
+    public void LoadRun(string username, string password)
+    {
+        DataPersistenceManager.Instance.Login(username, password);
+    }
+
+    public void LoadData(GameData data)
+    {
+        ApplyGameData(data);
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.Seed = seed;
+        data.RoomUnit = roomUnit;
+        data.CurrentRoomIndex = currentRoomIndex;
+        data.EffigiesInRoom = new SerializedDictionary<int, string[]>(EffigiesInRoom);
+        data.EffigiesInRun = new SerializedDictionary<string, int>(EffigiesInRun);
+    }
+
+    public void ApplyGameData(GameData saveData)
+    {
+        if (saveData == null)
+        {
+            throw new ArgumentNullException(nameof(saveData));
+        }
+
+        seed = saveData.Seed;
+        roomUnit = saveData.RoomUnit;
+        currentRoomIndex = saveData.CurrentRoomIndex;
+
+        EffigiesInRoom = saveData.EffigiesInRoom != null
+            ? new Dictionary<int, string[]>(saveData.EffigiesInRoom)
+            : new Dictionary<int, string[]>();
+
+        EffigiesInRun = saveData.EffigiesInRun != null
+            ? new Dictionary<string, int>(saveData.EffigiesInRun)
+            : new Dictionary<string, int>();
+
+        if (EffigiesInRoom.Count == 0)
+        {
+            GenerateMap(roomUnit, seed);
+        }
+
+        SaveGameBridge.SetActiveGameData(saveData.Username, saveData);
     }
 }
