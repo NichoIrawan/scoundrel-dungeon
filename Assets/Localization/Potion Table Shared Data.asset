@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Potion Table Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Potion Table
+  m_TableCollectionNameGuidString: dc5053a8e1750e148acf43f77d8cd257
+  m_Entries:
+  - m_Id: 28568358912
+    m_Key: potion_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 40400490496
+    m_Key: potion_8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43038707712
+    m_Key: potion_12
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 7427968543977636136
+  references:
+    version: 2
+    RefIds:
+    - rid: 7427968543977636136
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1780357319722

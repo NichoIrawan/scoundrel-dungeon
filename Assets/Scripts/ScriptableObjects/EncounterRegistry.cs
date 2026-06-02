@@ -9,17 +9,17 @@ namespace Assets.Scripts
     {
         [SerializeField] private List<EncounterScriptableObject> _encounters;
 
-        public Dictionary<string, EncounterScriptableObject> Dictionary { get; private set; }
+        public Dictionary<string, EncounterScriptableObject> Dictionary { get; private set; } = new Dictionary<string, EncounterScriptableObject>();
         public List<string> MonsterIds { get; private set; } = new();
         public List<string> WeaponIds { get; private set; } = new();
         public List<string> PotionIds { get; private set; } = new();
 
         public void Initialize()
         {
-            Dictionary = new Dictionary<string, EncounterScriptableObject>();
-            MonsterIds = new List<string>();
-            WeaponIds = new List<string>();
-            PotionIds = new List<string>();
+            Dictionary.Clear();
+            MonsterIds.Clear();
+            WeaponIds.Clear();
+            PotionIds.Clear();
 
             if (_encounters == null) return;
 
@@ -60,6 +60,11 @@ namespace Assets.Scripts
 
         public EncounterScriptableObject TryGetEncounter(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return null;
+            }
+
             if (Dictionary == null)
             {
                 Debug.LogError("[EncounterRegistry] Dictionary is null. Was Initialize() called?");

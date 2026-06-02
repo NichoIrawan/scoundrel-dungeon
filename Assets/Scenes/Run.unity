@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   loadActiveSaveOnStart: 1
   playerState:
-    Health: 20
+    Health: 35
     EquippedWeaponId: 
     StoredPotionId: 
     CanEscape: 1

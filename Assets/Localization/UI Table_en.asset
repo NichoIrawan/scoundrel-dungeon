@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI Table_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 409ef05a5698dfd40b767fd49f5b2178, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 6883625570304
+    m_Localized: You found a {0}. What would you like to do? {1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45337186304
+    m_Localized: Take Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 94678978560
+    m_Localized: Equip Weapon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 133820223488
+    m_Localized: Use Potion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 164535111680
+    m_Localized: Store Potion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211981078528
+    m_Localized: Escape
+    m_Metadata:
+      m_Items: []
+  - m_Id: 514277150720
+    m_Localized: New Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 582635917312
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 621638750208
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 662629683200
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 696268001280
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5891991441408
+    m_Localized: 'HP: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5897829912576
+    m_Localized: 'Weapon: {0} (Power {1}){2}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5898555527168
+    m_Localized: '(Last Slain: {0})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5939009589248
+    m_Localized: 'Weapon: None'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5899373416448
+    m_Localized: 'Potion: None'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5900220665856
+    m_Localized: 'Potion: {0} (Heal {1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5901042749440
+    m_Localized: 'Room {0}: {1}/3'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5933536022528
+    m_Localized: Hallway - Node {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5934886588416
+    m_Localized: 'Unresolved Room Seals (Debt): {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5936333623296
+    m_Localized: Enter Room {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5937847767040
+    m_Localized: Dungeon Exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6700066050048
+    m_Localized: 'A hostile {0} (Strength: {1}) blocks the way. How will you resolve
+      it?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6700976214016
+    m_Localized: Attack With Weapon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6706013573120
+    m_Localized: Attack (Weapon Restricted)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7363449753600
+    m_Localized: (Will heal {0} HP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7369489551360
+    m_Localized: (Will heal 0 HP because a potion was already used in this room)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7371750281216
+    m_Localized: Use Potion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7373549637632
+    m_Localized: Use Potion (Heals 0)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7376695365632
+    m_Localized: Store Potion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7603472994304
+    m_Localized: Equip Weapon
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

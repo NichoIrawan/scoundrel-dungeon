@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3c1c8e1a968bc04ca116812b96bb2bb, type: 3}
   m_Name: BaseEncounterDictionary
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.EncounterRegistry
-  _effigies:
+  _encounters:
   - {fileID: 11400000, guid: 1865bb74085b5834f822d86a2d1157b7, type: 2}
-  - {fileID: 11400000, guid: 93ebc094ef4feb946b858b866e788125, type: 2}
   - {fileID: 11400000, guid: e49f89e9b21802a408073b963891bddd, type: 2}
-  - {fileID: 11400000, guid: e7139019bd0b6f844ab27b8a94ab55e0, type: 2}
-  - {fileID: 11400000, guid: f661154a7e88e664485e937ef122987a, type: 2}
-  - {fileID: 11400000, guid: 81e9cb93698188947add3be720e92537, type: 2}
-  - {fileID: 11400000, guid: 0f24d62111136034eb96764aacb20554, type: 2}
-  - {fileID: 11400000, guid: d96bd0d4b8e858745ba290ba943939d2, type: 2}
   - {fileID: 11400000, guid: a0b46a11ab1377045a73e25a941abfd4, type: 2}
+  - {fileID: 11400000, guid: 81e9cb93698188947add3be720e92537, type: 2}
+  - {fileID: 11400000, guid: f661154a7e88e664485e937ef122987a, type: 2}
   - {fileID: 11400000, guid: 436d8f1a64ea31046a47595627776e49, type: 2}
+  - {fileID: 11400000, guid: d96bd0d4b8e858745ba290ba943939d2, type: 2}
+  - {fileID: 11400000, guid: 0f24d62111136034eb96764aacb20554, type: 2}
+  - {fileID: 11400000, guid: e7139019bd0b6f844ab27b8a94ab55e0, type: 2}
+  - {fileID: 11400000, guid: 93ebc094ef4feb946b858b866e788125, type: 2}

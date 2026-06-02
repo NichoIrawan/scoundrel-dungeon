@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RunManager : MonoBehaviour, IDataPersistence
 {
+    private const int MAX_HP = 35;
+
     [SerializeField] private bool loadActiveSaveOnStart = true;
     [SerializeField] private PlayerState playerState = new();
 
@@ -65,6 +67,7 @@ public class RunManager : MonoBehaviour, IDataPersistence
         if (result == null) return;
 
         playerState.Health += result.HealthDelta;
+        playerState.Health = Mathf.Clamp(playerState.Health, 0, MAX_HP);
 
         if (result.EquippedWeaponId != null)
         {

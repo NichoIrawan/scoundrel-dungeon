@@ -54,7 +54,6 @@ namespace Assets.Scripts.SaveSystem
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             dataHandler = new FileDataHandler();
         }
 

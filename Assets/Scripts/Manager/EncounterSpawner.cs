@@ -8,6 +8,8 @@ namespace Assets.Scripts.Manager
     {
         [SerializeField] private RoomManager roomManager;
         [SerializeField] private DungeonManager dungeonManager;
+        [SerializeField] private GameObject encounterPrefab;
+        [SerializeField] private List<SlotManager> slots;
 
         private void Start()
         {
@@ -21,10 +23,22 @@ namespace Assets.Scripts.Manager
 
             if (roomManager == null || dungeonManager == null) return;
 
-            var slotManagers = roomManager.GetComponentsInChildren<SlotManager>(includeInactive: true);
             var encounterIds = roomManager.CurrentEncounterIds;
 
-            foreach (var slot in slotManagers)
+            // Clean up old encounter instances from all slots
+            foreach (var slot in slots)
+            {
+                foreach (Transform child in slot.transform)
+                {
+                    var encounter = child.GetComponent<Encounter>();
+                    if (encounter != null)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                }
+            }
+
+            foreach (var slot in slots)
             {
                 int idx = slot.SlotIndex;
                 if (idx < 0 || idx >= encounterIds.Length) continue;
@@ -32,6 +46,16 @@ namespace Assets.Scripts.Manager
                 var encounterId = encounterIds[idx];
                 var so = dungeonManager.GetEncounter(encounterId);
                 slot.SetEncounterData(so);
+
+                if (so != null && encounterPrefab != null)
+                {
+                    var instance = Instantiate(encounterPrefab, slot.transform);
+                    var encounter = instance.GetComponent<Encounter>();
+                    if (encounter != null)
+                    {
+                        encounter.Config = so;
+                    }
+                }
             }
         }
 

@@ -5,40 +5,17 @@ using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private DungeonManager dungeonManager;
-    [SerializeField] private RunManager runManager;
+    [SerializeField] private UnityEngine.UI.Button _continueButton;
 
     private void Start()
     {
-        ResolveReferences();
     }
 
-    public bool OnRegisterClicked(string username, string password)
+    private void Update()
     {
-        try
+        if (_continueButton != null && DataPersistenceManager.Instance != null)
         {
-            DataPersistenceManager.Instance.CreateAccount(username, password);
-            DataPersistenceManager.Instance.Login(username, password);
-            return true;
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogWarning($"[MainMenuManager] Register failed: {ex.Message}");
-            return false;
-        }
-    }
-
-    public bool OnLoginClicked(string username, string password)
-    {
-        try
-        {
-            DataPersistenceManager.Instance.Login(username, password);
-            return true;
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogWarning($"[MainMenuManager] Login failed: {ex.Message}");
-            return false;
+            _continueButton.interactable = DataPersistenceManager.Instance.HasGameData;
         }
     }
 
@@ -49,12 +26,14 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnNewGameClicked()
     {
-        ResolveReferences();
-
         var seed = System.DateTime.UtcNow.Ticks.ToString();
-        dungeonManager?.GenerateDungeon(seed);
-        runManager?.InitializeNewRun();
-        DataPersistenceManager.Instance.SaveGame();
+        var persistenceManager = DataPersistenceManager.Instance;
+        persistenceManager.NewGame();
+
+        // Store seed in GameData for DungeonManager to use when loading
+        SaveGameBridge.ActiveGameData.Seed = seed;
+        persistenceManager.SaveGame();
+
         SceneController.Instance
             .NewTransition()
             .Load(SceneDatabase.Slots.Run, SceneDatabase.Scenes.Run)
@@ -62,6 +41,7 @@ public class MainMenuManager : MonoBehaviour
             .Unload(SceneDatabase.Slots.Menu)
             .WithOverlay()
             .Perform();
+
     }
 
     public void OnContinueClicked()
@@ -89,11 +69,5 @@ public class MainMenuManager : MonoBehaviour
     public void OnQuitClicked()
     {
         Application.Quit();
-    }
-
-    private void ResolveReferences()
-    {
-        if (dungeonManager == null) dungeonManager = FindAnyObjectByType<DungeonManager>();
-        if (runManager == null) runManager = FindAnyObjectByType<RunManager>();
     }
 }

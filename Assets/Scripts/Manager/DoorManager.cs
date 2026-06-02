@@ -1,6 +1,6 @@
-using Assets.Scripts;
 using Assets.Scripts.Manager;
 using Assets.Scripts.SceneController;
+using Assets.Scripts.Utilities;
 using UnityEngine;
 
 public class DoorManager : MonoBehaviour, IInteractable

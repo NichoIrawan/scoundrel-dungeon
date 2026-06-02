@@ -34,6 +34,12 @@ public class RoomManager : MonoBehaviour
         PopulateSlots();
 
         encounterSpawner?.BindEncountersToSlots();
+
+        var uiController = FindAnyObjectByType<Assets.Scripts.UI.RoomUIController>();
+        if (uiController != null)
+        {
+            uiController.RefreshUI();
+        }
     }
 
     public void PopulateSlots()

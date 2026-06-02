@@ -107,7 +107,11 @@ namespace Assets.Scripts.Manager
 
         public EncounterScriptableObject GetEncounter(string encounterId)
         {
-            return encounterRegistry?.TryGetEncounter(encounterId);
+            if (string.IsNullOrWhiteSpace(encounterId))
+            {
+                return null;
+            }
+            return encounterRegistry.TryGetEncounter(encounterId);
         }
 
         public (int monsters, int weapons, int potions) GetRemainingDeckStats()
@@ -154,6 +158,7 @@ namespace Assets.Scripts.Manager
                 }
             }
 
+            dungeonState.LastResolvedNode = dungeonState.CurrentNode;
             dungeonState.CurrentNode = chosenNodeId;
             SyncUnresolvedNodesToState();
             return true;
@@ -168,6 +173,8 @@ namespace Assets.Scripts.Manager
 
             currentNode.IsResolved = true;
             currentNode.IsEscaped = false;
+
+            dungeonState.LastResolvedNode = dungeonState.CurrentNode;
 
             if (unresolvedNodes.Count > 0)
             {
@@ -208,7 +215,7 @@ namespace Assets.Scripts.Manager
                 SyncUnresolvedNodesToState();
             }
 
-            var nextNode = currentNode.LeftNode >= 0 ? currentNode.LeftNode : currentNode.RightNode;
+            var nextNode = dungeonState.LastResolvedNode;
             if (nextNode < 0 || !dungeonState.Nodes.ContainsKey(nextNode))
                 return false;
 
@@ -221,6 +228,7 @@ namespace Assets.Scripts.Manager
             InitializeDungeonState();
             if (unresolvedNodes.Count == 0) return false;
 
+            dungeonState.LastResolvedNode = dungeonState.CurrentNode;
             dungeonState.CurrentNode = unresolvedNodes.Dequeue();
             SyncUnresolvedNodesToState();
             return true;

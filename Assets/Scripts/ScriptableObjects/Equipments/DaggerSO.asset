@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b20d76019a4d74c9dbd2930e39ab44, type: 3}
   m_Name: DaggerSO
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.EquipmentsScriptableObject
-  Name: Dagger
-  Damage: 4
+  EncounterId: dagger
+  DisplayName: Dagger
+  Artwork: {fileID: 8869150291983070541, guid: 8f75ed62e7e30f445aebed7a77e7bcce, type: 3}
+  Power: 4

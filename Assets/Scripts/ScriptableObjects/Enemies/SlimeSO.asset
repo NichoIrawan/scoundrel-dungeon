@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39e4ab73afe12504db418cef2ddaae36, type: 3}
   m_Name: SlimeSO
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.EnemiesScriptableObject
-  Name: Slime
-  Power: 4
+  EncounterId: slime
+  DisplayName: Slime
+  Artwork: {fileID: -6042202785590769238, guid: 5fcb512c63dba024a8cdc54b87e49b84, type: 3}
+  Strength: 4

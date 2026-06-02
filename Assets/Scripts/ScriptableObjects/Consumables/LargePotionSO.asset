@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc552be44778b549b3027b77ff5b016, type: 3}
   m_Name: LargePotionSO
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.ConsumablesScriptableObject
-  Name: Large Potion
-  HealAmount: 12
+  EncounterId: potion_12
+  DisplayName: High Potion
+  Artwork: {fileID: -8847448494764228524, guid: 32914b987fc5044409a362b60e4c4ba3, type: 3}
+  HealValue: 12

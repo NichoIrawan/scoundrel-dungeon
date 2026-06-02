@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39e4ab73afe12504db418cef2ddaae36, type: 3}
   m_Name: SkeletonSO
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.EnemiesScriptableObject
-  Name: Skeleton
-  Power: 8
+  EncounterId: skeleton
+  DisplayName: Skeleton
+  Artwork: {fileID: 1748149895333044603, guid: 5fcb512c63dba024a8cdc54b87e49b84, type: 3}
+  Strength: 8
